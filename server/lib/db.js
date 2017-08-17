@@ -1,6 +1,15 @@
 const mysql = require('mysql');
 const logger = require('./logger');
 
+/**
+ * Some basic sql operations(CRUD) examples:
+ *  INSERT INTO users(fullname, age) VALUES("Harry Potter", 12);
+ *  DELETE FROM users WHERE name="Harry Potter";
+ *  UPDATE USERS SET age=13 WHERE fullname="Harry Potter";
+ *  SELECT givenname FROM users WHERE age=13;
+ */
+
+
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',

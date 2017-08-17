@@ -1,8 +1,9 @@
 create table users (
   id integer primary key,
-  create_time datetime,
+  registertime datetime,
   fullname char,
   familyname char,
+  givenname char,
   age integer,
   gender integer,
   email text

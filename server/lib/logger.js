@@ -19,19 +19,19 @@ function blue(str) {
 }
 
 function error() {
-  console.error.bind(0, red(currentTime())).apply(console, arguments);
+  console.error.bind(null, red(currentTime())).apply(console, arguments);
 }
 
 function warn() {
-  console.log.bind(0, yellow(currentTime())).apply(console, arguments);
+  console.log.bind(null, yellow(currentTime())).apply(console, arguments);
 }
 
 function info() {
-  console.log.bind(0, green(currentTime())).apply(console, arguments);
+  console.log.bind(null, green(currentTime())).apply(console, arguments);
 }
 
 function debug() {
-  console.log.bind(0, blue(currentTime())).apply(console, arguments);
+  console.log.bind(null, blue(currentTime())).apply(console, arguments);
 }
 
 module.exports = {

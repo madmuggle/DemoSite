@@ -1,4 +1,5 @@
 const logger = require('../logger');
+const createuser = require('./createuser');
 
 async function handler(ctx) {
   const req = ctx.request.body;
@@ -8,7 +9,8 @@ async function handler(ctx) {
 
   switch (req.action) {
   case 'CreateUser':
-    ctx.body = '{"handled": "OK"}';
+    logger.info('Handling request CreateUser...');
+    ctx.body = await createuser(req);
     break;
   default:
     logger.warn(`Invalid request: { "action": ${req.action}, ... }`);

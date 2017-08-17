@@ -13,26 +13,50 @@ const logger = require('./logger');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '123456',
+  password: 'asdf',
   database: 'blahdb',
 });
 
 
-connection.connect(err => {
-  if (err) {
-    logger.error('Error when connecting to Mysql: ' + err);
-    process.exit(1);
-  }
-  logger.info('connection established.');
-});
+function connect() {
+  return new Promise((res, rej) => {
+    connection.connect(err => {
+      if (err) {
+        logger.error('Error when connecting to Mysql: ' + err);
+        rej(err);
+      } else {
+        logger.info('connection established.');
+        res('ok');
+      }
+    });
+  });
+}
 
-connection.query('select * from users', (err, result, fields) => {
-  if (err)
-    throw err;
-  logger.info('users: ', result);
-});
+function disconnect() {
+  return new Promise((res, rej) => {
+    connection.end(err => {
+      if (err) {
+        logger.error('Error when connecting to Mysql: ' + err);
+        rej(err);
+      } else {
+        logger.info('connection established.');
+        res('ok');
+      }
+    });
+  });
+}
 
-// close the connection
-//connection.end(err => {
-//});
+function executeSql(sqlString) {
+  logger.info("Will executing sql expression: ", sqlString);
+  return new Promise((res, rej) => {
+    connection.query(sqlString, (err, result, fields) => {
+      if (!err) res(result);
+      else rej(err);
+    });
+  });
+}
 
+module.exports = {
+  disconnect,
+  executeSql,
+};

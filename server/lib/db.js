@@ -18,43 +18,28 @@ const connection = mysql.createConnection({
 });
 
 
+function executeSql(sqlString) {
+  logger.info("Will executing sql expression: ", sqlString);
+  return new Promise((res, rej) => {
+    connection.query(sqlString, (e, d, _fields) => e ? rej(e) : res(d));
+  });
+}
+
 function connect() {
   return new Promise((res, rej) => {
-    connection.connect(err => {
-      if (err) {
-        logger.error('Error when connecting to Mysql: ' + err);
-        rej(err);
-      } else {
-        logger.info('connection established.');
-        res('ok');
-      }
-    });
+    connection.connect(e => e ? rej(e) : res('Mysql connect ok.'));
   });
 }
 
 function disconnect() {
   return new Promise((res, rej) => {
-    connection.end(err => {
-      if (err) {
-        logger.error('Error when connecting to Mysql: ' + err);
-        rej(err);
-      } else {
-        logger.info('connection established.');
-        res('ok');
-      }
-    });
+    connection.end(e => e ? rej(e) : res('Mysql disconnect ok.'));
   });
 }
 
-function executeSql(sqlString) {
-  logger.info("Will executing sql expression: ", sqlString);
-  return new Promise((res, rej) => {
-    connection.query(sqlString, (err, result, fields) => {
-      if (!err) res(result);
-      else rej(err);
-    });
-  });
-}
+// Start the connection directly
+connect().then(logger.info).catch(logger.error);
+
 
 module.exports = {
   disconnect,

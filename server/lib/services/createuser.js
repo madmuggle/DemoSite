@@ -3,9 +3,9 @@ const logger = require('../logger');
 const { mkInsertString, mkTimeString } = require('./dbutils');
 
 
-async function handle(req) {
-  req.data.registertime = mkTimeString(new Date());
-  const { fields, values } = mkInsertString(req.data);
+async function handle(data) {
+  data.registertime = mkTimeString(new Date());
+  const { fields, values } = mkInsertString(data);
   const sqlStr = `INSERT INTO users(${fields}) VALUES(${values})`;
   try {
     await db.executeSql(sqlStr);

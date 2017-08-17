@@ -10,7 +10,7 @@ async function handler(ctx) {
   switch (req.action) {
   case 'CreateUser':
     logger.info('Handling request CreateUser...');
-    ctx.body = await createuser(req);
+    ctx.body = await createuser(req.data);
     break;
   default:
     logger.warn(`Invalid request: { "action": ${req.action}, ... }`);

@@ -1,0 +1,26 @@
+<script>
+const SERVICEURI = "http://localhost:8000/services";
+
+async function createUser(requestJson) {
+  const resp = await fetch(SERVICEURI, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestJson),
+  });
+  console.log("resp:", resp);
+}
+
+createUser({
+  action: "CreateUser",
+  data: {
+    fullname: "James Potter",
+    age: 30
+  },
+})
+.then(console.log)
+.catch(console.error);
+
+</script>
+

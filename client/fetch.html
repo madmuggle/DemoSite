@@ -1,8 +1,8 @@
 <script>
-const SERVICEURI = "http://localhost:8000/services";
+const SERVICESURI = "http://localhost:8000/services";
 
-async function createUser(requestJson) {
-  const resp = await fetch(SERVICEURI, {
+async function reqSvc(requestJson) {
+  const resp = await fetch(SERVICESURI, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -10,16 +10,17 @@ async function createUser(requestJson) {
     body: JSON.stringify(requestJson),
   });
   console.log("resp:", resp);
+  return await resp.json();
 }
 
-createUser({
+reqSvc({
   action: "CreateUser",
   data: {
     fullname: "James Potter",
     age: 30
   },
 })
-.then(console.log)
+.then(x => console.log("CreateUser result:", x))
 .catch(console.error);
 
 </script>

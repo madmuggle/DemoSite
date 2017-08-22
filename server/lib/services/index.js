@@ -14,7 +14,7 @@ async function handler(ctx) {
     break;
   default:
     logger.warn(`Invalid request: { "action": ${req.action}, ... }`);
-    ctx.body = `{"error": "Unknown action: ${req.action}}"`;
+    ctx.body = `{"error": "UnknownAction[${req.action}]"}`;
   }
 }
 

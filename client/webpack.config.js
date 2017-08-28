@@ -1,5 +1,5 @@
 module.exports = {
-  entry: "./src/main.jsx",
+  entry: "./src/js/main.jsx",
   output: {
     path: __dirname + "/www/js/",
     filename: "app.js",
@@ -12,6 +12,9 @@ module.exports = {
       test: /\.jsx?$/,
       exclude: /node_modules/,
       loader: "babel-loader",
+    }, {
+      test: /\.css$/,
+      loader: "style-loader!css-loader",
     }],
   },
   devServer: {

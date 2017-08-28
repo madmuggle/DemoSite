@@ -1,4 +1,3 @@
-<script>
 const SERVICESURI = "http://localhost:8000/services";
 
 async function reqSvc(requestJson) {
@@ -13,15 +12,13 @@ async function reqSvc(requestJson) {
   return await resp.json();
 }
 
-reqSvc({
-  action: "CreateUser",
-  data: {
-    fullname: "James Potter",
-    age: 30
-  },
-})
-.then(x => console.log("CreateUser result:", x))
-.catch(console.error);
-
-</script>
+//reqSvc({
+//  action: "CreateUser",
+//  data: {
+//    fullname: "James Potter",
+//    age: 30
+//  },
+//})
+//.then(x => console.log("CreateUser result:", x))
+//.catch(console.error);
 

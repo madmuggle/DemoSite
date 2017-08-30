@@ -6,6 +6,8 @@ import {
 
 import Greeter from "./Greeter";
 import Login from "./Login";
+import "antd/dist/antd.css";
+
 
 function Header() {
   return (
@@ -14,7 +16,7 @@ function Header() {
         <ul>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/login">Login</Link></li>
-          <li><Link to="/unknown">Unknown</Link></li>
+          <li><Link to="/register">Register</Link></li>
         </ul>
       </nav>
     </header>

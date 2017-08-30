@@ -6,22 +6,10 @@ import {
 
 import Greeter from "./Greeter";
 import Login from "./Login";
+import Header from "./Header";
+
 import "antd/dist/antd.css";
 
-
-function Header() {
-  return (
-    <header>
-      <nav>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/login">Login</Link></li>
-          <li><Link to="/register">Register</Link></li>
-        </ul>
-      </nav>
-    </header>
-  );
-}
 
 render((
   <Router>

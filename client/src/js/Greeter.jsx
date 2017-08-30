@@ -6,8 +6,7 @@ class Greeter extends Component {
   render() {
     return (
       <div className="Greeter">
-        HELLO WX, This is a React Project!
-        <Button type="primary">Primary Button Of Ant Design</Button>
+        Hello, this is a sample project for testing React and Ant Design.
       </div>
     );
   }

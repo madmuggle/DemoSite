@@ -31,7 +31,7 @@ class Header extends Component {
             </Menu.Item>
             <Menu.Item key="login">
               <div>
-                <Icon type="user-add" /><Link to="/login">Login</Link>
+                <Icon type="user" /><Link to="/login">Login</Link>
               </div>
             </Menu.Item>
           </Menu>

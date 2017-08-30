@@ -17,10 +17,7 @@ class Header extends Component {
   render() {
     return (
       <header className="header-main">
-        <div className="header-logo">
-          <img src="/img/logo.svg" />
-        </div>
-        <nav className="header-rest">
+        <nav className="header-menu">
           <Menu onClick={this.handleClick} mode="horizontal">
             <Menu.Item key="home">
               <div>

@@ -5,21 +5,16 @@
   padding: 0 20px;
 }
 
-.header-logo, .header-rest {
+.header-menu {
   display: inline-block;
-}
-
-.header-logo {
-  margin-top: 10px;
-}
-
-.header-rest {
-  font-size: 16px;
   float: right;
-  margin-top: 20px;
+  font-size: 16px;
 }
 
-.header-rest a {
+/*
+ * Rewrite the default antd css, make the <a> inside <Menu.Item> bigger.
+ */
+.header-menu a {
   display: inline-block;
 }
 

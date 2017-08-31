@@ -1,17 +1,13 @@
-import React, { Component } from 'react';
-import { Input, Button, Icon, Form, Checkbox } from 'antd';
+import React, { Component } from "react";
+import { Input, Button, Icon, Form, Checkbox } from "antd";
+import { Link } from "react-router-dom";
 import "../css/Login.css";
 
 const FormItem = Form.Item;
 
 class LoginForm extends Component {
 
-  constructor(props) {
-    super(props);
-    this.handleSubmmit = this.handleSubmmit.bind(this);
-  }
-
-  handleSubmmit(e) {
+  handleSubmmit = e => {
     e.preventDefault();
     this.props.form.validateFields((e, vals) => {
       if (!e) {
@@ -20,7 +16,8 @@ class LoginForm extends Component {
     });
   }
 
-  nameItem(getFieldDecorator) {
+  nameItem = () => {
+    const { getFieldDecorator } = this.props.form;
     return (
       <FormItem>
         {getFieldDecorator("username", {
@@ -35,7 +32,8 @@ class LoginForm extends Component {
     );
   }
 
-  passwordItem(getFieldDecorator) {
+  passwordItem = () => {
+    const { getFieldDecorator } = this.props.form;
     return (
       <FormItem>
         {getFieldDecorator("password", {
@@ -51,14 +49,16 @@ class LoginForm extends Component {
     );
   }
 
-  rememberItem(getFieldDecorator) {
+  rememberItem = () => {
+    const { getFieldDecorator } = this.props.form;
     return getFieldDecorator("remember", {
       valuePropName: "checked",
       initialValue: true,
     })(<Checkbox>Remember me</Checkbox>);
   }
 
-  submitItem(getFieldDecorator) {
+  submitItem = () => {
+    const { getFieldDecorator } = this.props.form;
     return (
       <FormItem>
         { this.rememberItem(getFieldDecorator) }
@@ -66,18 +66,17 @@ class LoginForm extends Component {
         <Button type="primary" htmlType="submit" className="login-form-button">
           Log in
         </Button>
-        Or <a href="">register now!</a>
+        Or <Link to="/register">register now!</Link>
       </FormItem>
     );
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmmit} className="login-form">
-        {this.nameItem(getFieldDecorator)}
-        {this.passwordItem(getFieldDecorator)}
-        {this.submitItem(getFieldDecorator)}
+        {this.nameItem()}
+        {this.passwordItem()}
+        {this.submitItem()}
       </Form>
     );
   }

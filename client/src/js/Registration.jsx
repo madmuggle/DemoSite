@@ -1,17 +1,26 @@
 import React, { Component } from "react";
 import { Input, Button, Icon, Form, Checkbox } from "antd";
 import { Link } from "react-router-dom";
+import reqSvc from "./reqSvc";
 import "../css/Registration.css";
 
 const FormItem = Form.Item;
 
 class RegistrationForm extends Component {
 
+  async createUser(userInfo) {
+    const r = await reqSvc({ action: "CreateUser", data: userInfo });
+    if (r.status !== "ok")
+      console.error("Failed creating user.");
+    else
+      console.log("Succeed creating user.");
+  }
+
   handleSubmmit = e => {
     e.preventDefault();
     this.props.form.validateFields((e, vals) => {
       if (!e) {
-        console.log("Received values of form:", vals);
+        this.createUser(vals);
       }
     });
   }
@@ -47,7 +56,7 @@ class RegistrationForm extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <FormItem>
-        {getFieldDecorator("username", {
+        {getFieldDecorator("name", {
           rules: [{ required: true, message: "Please input your user name!" }],
         })(
           <Input

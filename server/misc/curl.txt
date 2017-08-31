@@ -1,7 +1,7 @@
 # vim:ft=sh
 
 # Example for CreateUser:
-curl localhost:8000/services -X POST -H 'Content-Type: application/json' \
-  -d '{"action": "CreateUser", "data": {"fullname": "James Potter", "age": 30}}'
+curl localhost:8000/api -X POST -H 'Content-Type: application/json' \
+  -d '{"action": "CreateUser", "data": {"email": "a@b.com", "name": "James Potter", "password": "asdf"}}'
 
 

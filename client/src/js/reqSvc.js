@@ -1,6 +1,6 @@
-const SERVICESURI = "http://localhost:8000/services";
+const SERVICESURI = "http://localhost:8000/api";
 
-async function reqSvc(requestJson) {
+export default async function reqSvc(requestJson) {
   const resp = await fetch(SERVICESURI, {
     method: "POST",
     headers: {
@@ -11,6 +11,7 @@ async function reqSvc(requestJson) {
   console.log("resp:", resp);
   return await resp.json();
 }
+
 
 //reqSvc({
 //  action: "CreateUser",

@@ -11,10 +11,3 @@
   font-size: 16px;
 }
 
-/*
- * Rewrite the default antd css, make the <a> inside <Menu.Item> bigger.
- */
-.header-menu a {
-  display: inline-block;
-}
-

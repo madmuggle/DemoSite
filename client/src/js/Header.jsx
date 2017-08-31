@@ -11,7 +11,7 @@ class Header extends Component {
     case "email":
       window.location = "mailto:wallacegibbon@aliyun.com";
       break;
-    case "home":
+    case "homepage":
       this.props.history.push("/");
       break;
     case "register":
@@ -30,7 +30,7 @@ class Header extends Component {
       <header className="header-main">
         <nav className="header-menu">
           <Menu onClick={this.handleClick} mode="horizontal">
-            <Menu.Item key="home">
+            <Menu.Item key="homepage">
               <div>
                 <Icon type="home" />Homepage
               </div>

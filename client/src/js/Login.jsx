@@ -16,16 +16,19 @@ class LoginForm extends Component {
     });
   }
 
-  nameItem = () => {
+  emailItem = () => {
     const { getFieldDecorator } = this.props.form;
     return (
       <FormItem>
-        {getFieldDecorator("username", {
-          rules: [{ required: true, message: "Please input your user name!" }],
+        {getFieldDecorator("email", {
+          rules: [
+            { required: true, message: "Input your email address!" },
+            { type: "email", message: "E-mail address invalid" },
+          ],
         })(
           <Input
-            prefix={<Icon type="user" style={{ fontSize: 13 }} />}
-            placeholder="Username"
+            prefix={<Icon type="mail" style={{ fontSize: 13 }} />}
+            placeholder="Email address"
           />
         )}
       </FormItem>
@@ -37,7 +40,7 @@ class LoginForm extends Component {
     return (
       <FormItem>
         {getFieldDecorator("password", {
-          rules: [{ required: true, message: "Please input your password!" }],
+          rules: [{ required: true, message: "Input your password!" }],
         })(
           <Input
             prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
@@ -74,7 +77,7 @@ class LoginForm extends Component {
   render() {
     return (
       <Form onSubmit={this.handleSubmmit} className="login-form">
-        {this.nameItem()}
+        {this.emailItem()}
         {this.passwordItem()}
         {this.submitItem()}
       </Form>

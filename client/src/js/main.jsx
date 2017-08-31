@@ -6,6 +6,7 @@ import {
 
 import Greeter from "./Greeter";
 import Login from "./Login";
+import Registration from "./Registration";
 import Header from "./Header";
 
 import "antd/dist/antd.css";
@@ -18,6 +19,7 @@ render((
       <Switch>
         <Route exact path="/" component={Greeter} />
         <Route path="/login" component={Login} />
+        <Route path="/register" component={Registration} />
         <Redirect path="*" to="/" />
       </Switch>
     </div>

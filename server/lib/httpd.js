@@ -17,7 +17,7 @@ const PORT = 8000;
 
 const sessionConfig = {
   key: 'SESSIONID',
-  maxAge: 1000 * 60,
+  maxAge: 1000 * 60 * 60,
   overwrite: true,
   httpOnly: true,
   signed: true,

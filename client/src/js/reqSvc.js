@@ -14,7 +14,7 @@ export default async function reqSvc(requestJson) {
   // resp.json() works, too.
   const respText = await resp.text();
 
-  console.log("Response\n:", resp);
+  console.log("Response:\n", resp);
   console.log("Response content:\n", respText);
 
   if (resp.status !== 200)

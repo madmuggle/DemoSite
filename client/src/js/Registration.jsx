@@ -14,36 +14,36 @@ class RegistrationForm extends Component {
   }
 
   help = {
-    emailValidating: null,
+    emailInfo: null,
   }
 
-  createUser = async userInfo => {
+  reqCreateUser = async userInfo => {
     try {
       const r = await reqSvc({ action: "CreateUser", data: userInfo });
-      if (r.status === "ok")
-        return "SUCCEED";
+      if (r.status === "success")
+        return "SUCCESS";
       else
-        return "FAIL";
+        return r.type;
     } catch (e) {
       console.error("reqSvc failed:", e);
-      return "REQUESTFAIL";
+      return "REQUEST_FAIL";
     }
   }
 
   changeStateByReqResult = result => {
     switch (result) {
-    case "SUCCEED":
+    case "REQUEST_FAIL":
+      this.help.emailInfo = "Server is busy, try it later.";
+      this.setState({ emailValidateStatus: "warning" });
+      break;
+
+    case "REGISTERED_BEFORE":
+      this.help.emailInfo = "This email has registered before.";
+      this.setState({ emailValidateStatus: "error" });
+      break;
+
+    case "SUCCESS":
       this.setState({ emailValidateStatus: "success" });
-      break;
-
-    case "FAIL":
-      this.help.emailValidating = "This email has registered before.";
-      this.setState({ emailValidateStatus: "error" });
-      break;
-
-    case "REQUESTFAIL":
-      this.help.emailValidating = "Server is busy, try it later.";
-      this.setState({ emailValidateStatus: "error" });
       break;
 
     default:
@@ -54,14 +54,14 @@ class RegistrationForm extends Component {
   handleSubmmit = e => {
     e.preventDefault();
 
-    this.help.emailValidating = "Validating email, please wait.";
-    this.setState({ emailValidateStatus: "validating" });
-
     this.props.form.validateFields((e, vals) => {
       if (e)
         return console.log("Form validating failed:", e);
 
-      this.createUser(vals).then(this.changeStateByReqResult);
+      this.help.emailInfo = "Validating email, please wait.";
+      this.setState({ emailValidateStatus: "validating" });
+
+      this.reqCreateUser(vals).then(this.changeStateByReqResult);
     });
   }
 
@@ -102,7 +102,7 @@ class RegistrationForm extends Component {
       return (
         <FormItem
           validateStatus={this.state.emailValidateStatus}
-          help={this.help.emailValidating}
+          help={this.help.emailInfo}
           hasFeedback
         >
           {this.emailItemSub()}

@@ -31,11 +31,11 @@ connectToMongo()
 .catch(logger.error);
 
 
-app.keys = ['my secret key'];
+app.keys = [ "Wallace", "Gibbon" ];
 
+app.use(session(sessionConfig, app));
 app.use(time);
 app.use(record);
-app.use(session(sessionConfig, app));
 app.use(cors);
 app.use(bodyparser());
 app.use(route.post('/api', api));

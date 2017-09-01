@@ -15,7 +15,11 @@ async function handler(ctx) {
     break;
 
   case "Login":
-    ctx.body = await handleLogin(data);
+    ctx.body = await handleLogin(data, ctx);
+    break;
+
+  case "GetUserInfo":
+    ctx.body = { status: "success", data: ctx.session.userInfo };
     break;
 
   default:
@@ -23,14 +27,26 @@ async function handler(ctx) {
     ctx.body = e;
   }
 
-  logger.info("The Response will be:\n", ctx.body);
+  logger.info("The response will be:\n", ctx.body);
 }
 
 
-async function handleLogin(reqData) {
+function fetchSafeUserInfo(userInfo) {
+  const { email, name } = userInfo;
+  return { email, name };
+}
+
+async function handleLogin(reqData, ctx) {
   const { email, password } = reqData;
-  return await checkEmailAndPassword(email, password);
+  const r = await checkEmailAndPassword(email, password);
+  if (r.status === "success") {
+    logger.info(`User ${email} logged in successfully.`);
+    ctx.session.userInfo = fetchSafeUserInfo(await getFullUserInfo(email));
+    ctx.session.isLoggedIn = true;
+  }
+  return r;
 }
+
 
 async function handleCreateUser(reqData) {
   const { email, name, password } = reqData;
@@ -43,18 +59,20 @@ async function handleCreateUser(reqData) {
 }
 
 
+async function getFullUserInfo(email) {
+  return (await findDocuments(global.mongoConn, "users", { email }))[0];
+}
+
 async function isUserExists(email) {
-  const r = await findDocuments(global.mongoConn, "users", { email });
-  return (r.length !== 0);
+  return !!(await getFullUserInfo(email));
 }
 
 
 async function checkEmailAndPassword(email, password) {
-  const r = await findDocuments(global.mongoConn, "users", { email });
-  if (r.length === 0)
+  const user = await getFullUserInfo(email);
+  if (!user)
     return { status: "fail", type: "UNREGISTER" };
 
-  const user = r[0];
   if (user.password !== password)
     return { status: "fail", type: "WRONG_PASSWORD" };
 

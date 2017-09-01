@@ -35,13 +35,17 @@ async function cors(ctx, next) {
   if (!isLocalOrigin(ctx.request.origin))
     ctx.set('Access-Control-Allow-Origin', HOMEPAGE);
   else
-    ctx.set('Access-Control-Allow-Origin', '*');
+    //ctx.set('Access-Control-Allow-Origin', '*');
+    ctx.set('Access-Control-Allow-Origin', 'http://localhost:8080');
 
   /* When CORS request with a 'Access-Control-Request-Headers' header,
    * you need to give back a 'Access-Control-Allow-Headers'
    */
   if (ctx.headers['access-control-request-headers'])
     ctx.set('Access-Control-Allow-Headers', 'content-type');
+
+  /* When CORS with cookie, you need to set this header */
+  ctx.set('Access-Control-Allow-Credentials', 'true');
 
   if (ctx.method === 'OPTIONS')
     handleOPTIONS(ctx);

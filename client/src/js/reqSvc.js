@@ -3,13 +3,24 @@ const SERVICESURI = "http://localhost:8000/api";
 export default async function reqSvc(requestJson) {
   const resp = await fetch(SERVICESURI, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(requestJson),
   });
-  console.log("resp:", resp);
-  return await resp.json();
+
+  // Use resp.text() then JSON.parse, for better debug info.
+  // resp.json() works, too.
+  const respText = await resp.text();
+
+  console.log("Response\n:", resp);
+  console.log("Response content:\n", respText);
+
+  if (resp.status !== 200)
+    throw new Error("api request failed.");
+
+  return JSON.parse(respText);
 }
 
 

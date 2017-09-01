@@ -3,12 +3,13 @@ const bodyparser = require("koa-bodyparser");
 const route = require("koa-route");
 const Koa = require("koa");
 
+const { connectToMongo } = require("./mongodb");
+const { actionFilter } = require("./auth");
 const logger = require("./logger");
 const time = require("./time");
 const record = require("./record");
 const cors = require("./cors");
 const api = require("./api");
-const { connectToMongo } = require("./mongodb");
 
 
 const app = new Koa();
@@ -33,11 +34,12 @@ connectToMongo()
 
 app.keys = [ "Wallace", "Gibbon" ];
 
-app.use(session(sessionConfig, app));
 app.use(time);
+app.use(session(sessionConfig, app));
 app.use(record);
 app.use(cors);
 app.use(bodyparser());
+app.use(actionFilter);
 app.use(route.post('/api', api));
 app.use(ctx => ctx.set('Content-Type', 'application/json'));
 

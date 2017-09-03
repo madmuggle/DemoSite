@@ -11,6 +11,7 @@ class RegistrationForm extends Component {
 
   state = {
     emailValidateStatus: null,
+    passwordChkNotMatch: false,
   }
 
   help = {
@@ -43,6 +44,7 @@ class RegistrationForm extends Component {
       break;
 
     case "SUCCESS":
+      this.help.emailInfo = "";
       this.setState({ emailValidateStatus: "success" });
       break;
 
@@ -58,26 +60,39 @@ class RegistrationForm extends Component {
       if (e)
         return console.log("Form validating failed:", e);
 
-      this.help.emailInfo = "Validating email, please wait.";
+      this.help.emailInfo = "Checking email, please wait.";
       this.setState({ emailValidateStatus: "validating" });
 
       this.reqCreateUser(vals).then(this.changeStateByReqResult);
     });
   }
 
-  checkPassword(rules, value, callback) {
-    if (value && (value.length < 6 || value.indexOf(' ') !== -1))
-      callback("Password have to be 6 non-space characters");
-    else
+  checkPassword = (rules, value, callback) => {
+    const form = this.props.form;
+    if (value) {
+      if (value.length < 6 || value.indexOf(' ') !== -1) {
+        callback("Password have to be 6 non-space characters");
+      } else if (value !== form.getFieldValue("passwordChk")) {
+        this.state.passwordChkNotMatch = true;
+        callback();
+      } else {
+        this.state.passwordChkNotMatch = false;
+        callback();
+      }
+    } else {
       callback();
+    }
   }
 
   checkPasswordMatch = (rule, value, callback) => {
     const form = this.props.form;
-    if (value && value !== form.getFieldValue("password"))
+    if (value && value !== form.getFieldValue("password")) {
       callback("The 2 passwords you typed is inconsistent!");
-    else
+    } else {
+      console.log("will re-render passwordChk");
+      this.state.passwordChkNotMatch = false;
       callback();
+    }
   }
 
   emailItemSub = () => {
@@ -152,24 +167,41 @@ class RegistrationForm extends Component {
     );
   }
 
-  passwordChkItem = () => {
+  passwordChkItemSub = () => {
     const { getFieldDecorator } = this.props.form;
     return (
-      <FormItem>
-        {getFieldDecorator("passwordChk", {
-          rules: [
-            { required: true, message: "Input your password again!" },
-            { validator: this.checkPasswordMatch },
-          ],
-        })(
-          <Input
-            prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
-            type="password"
-            placeholder="Retype password"
-          />
-        )}
-      </FormItem>
+      getFieldDecorator("passwordChk", {
+        rules: [
+          { required: true, message: "Input your password again!" },
+          { validator: this.checkPasswordMatch },
+        ],
+      })(
+        <Input
+          prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
+          type="password"
+          placeholder="Retype password"
+        />
+      )
     );
+  }
+
+  passwordChkItem = () => {
+    if (this.state.passwordChkNotMatch)
+      return (
+        <FormItem
+          validateStatus="error"
+          help="The 2 passwords you typed is inconsistent!"
+          hasFeedback
+        >
+          {this.passwordChkItemSub()}
+        </FormItem>
+      );
+    else
+      return (
+        <FormItem>
+          {this.passwordChkItemSub()}
+        </FormItem>
+      );
   }
 
   submitItem = () => {

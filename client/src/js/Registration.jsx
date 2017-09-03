@@ -11,7 +11,7 @@ class RegistrationForm extends Component {
 
   state = {
     emailValidateStatus: null,
-    passwordChkNotMatch: false,
+    passwordChkNeedUpdate: false,
   }
 
   help = {
@@ -73,10 +73,10 @@ class RegistrationForm extends Component {
       if (value.length < 6 || value.indexOf(' ') !== -1) {
         callback("Password have to be 6 non-space characters");
       } else if (value !== form.getFieldValue("passwordChk")) {
-        this.state.passwordChkNotMatch = true;
+        this.setState({ passwordChkNeedUpdate: true });
         callback();
       } else {
-        this.state.passwordChkNotMatch = false;
+        this.setState({ passwordChkNeedUpdate: false });
         callback();
       }
     } else {
@@ -85,14 +85,16 @@ class RegistrationForm extends Component {
   }
 
   checkPasswordMatch = (rule, value, callback) => {
+    // Coming from password field, you need to render a normal passwordChk
+    // item first.
+    if (this.state.passwordChkNeedUpdate)
+      this.setState({ passwordChkNeedUpdate: false });
+
     const form = this.props.form;
-    if (value && value !== form.getFieldValue("password")) {
+    if (value && value !== form.getFieldValue("password"))
       callback("The 2 passwords you typed is inconsistent!");
-    } else {
-      console.log("will re-render passwordChk");
-      this.state.passwordChkNotMatch = false;
+    else
       callback();
-    }
   }
 
   emailItemSub = () => {
@@ -186,11 +188,11 @@ class RegistrationForm extends Component {
   }
 
   passwordChkItem = () => {
-    if (this.state.passwordChkNotMatch)
+    if (this.state.passwordChkNeedUpdate)
       return (
         <FormItem
           validateStatus="error"
-          help="The 2 passwords you typed is inconsistent!"
+          help="Password input updated, update this, too."
           hasFeedback
         >
           {this.passwordChkItemSub()}

@@ -1,8 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
-import {
-  BrowserRouter as Router, Route, Switch, Link, Redirect,
-} from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { createStore } from "redux";
 
 import Greeter from "./Greeter";
 import Login from "./Login";
@@ -13,7 +12,7 @@ import "antd/dist/antd.css";
 
 
 render((
-  <Router>
+  <BrowserRouter>
     <div>
       <Header />
       <Switch>
@@ -23,6 +22,6 @@ render((
         <Redirect path="*" to="/" />
       </Switch>
     </div>
-  </Router>
+  </BrowserRouter>
 ), document.getElementById("root"));
 

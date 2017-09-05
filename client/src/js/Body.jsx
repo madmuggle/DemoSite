@@ -29,12 +29,6 @@ class Body extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    isLoggedIn: state.isLoggedIn,
-  }
-}
-
 function mapDispatchToProps(dispatch) {
   return {
     logInfoAcknowledge: isLoggedIn => {

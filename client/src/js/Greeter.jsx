@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { Table } from 'antd';
 import reqSvc from "./reqSvc";
 import "../css/Greeter.css";
@@ -39,19 +40,35 @@ class Greeter extends Component {
 
   render() {
     const { yourInfo } = this.state;
-    if (!yourInfo)
+    if (this.props.isLoggedIn) {
+      if (yourInfo)
+        return (
+          <div className="data-center">
+            <Table columns={this.columns} dataSource={[ yourInfo ]} />
+          </div>
+        );
+      else
+        return (
+          <div className="data-center Greeter">
+            Fetching you personal information from server now...
+          </div>
+        );
+    } else {
       return (
         <div className="data-center Greeter">
-          Your personal infomation will be shown here after you logged in.
+          You are not logged in yet, please log in first.
         </div>
       );
-    else
-      return (
-        <div className="data-center">
-          <Table columns={this.columns} dataSource={[ yourInfo ]} />
-        </div>
-      );
+    }
   }
 }
 
-export default Greeter;
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: state.isLoggedIn,
+  }
+}
+
+
+export default connect(mapStateToProps)(Greeter);
+

@@ -18,6 +18,14 @@ async function handler(ctx) {
     ctx.body = await handleLogin(data, ctx);
     break;
 
+  case "Logout":
+    ctx.body = await handleLogout(ctx);
+    break;
+
+  case "IsLoggedIn":
+    ctx.body = { status: "success", data: ctx.session.isLoggedIn };
+    break;
+
   case "GetUserInfo":
     ctx.body = { status: "success", data: ctx.session.userInfo };
     break;
@@ -39,18 +47,25 @@ function fetchSafeUserInfo(userInfo) {
 async function handleLogin(reqData, ctx) {
   const { email, password } = reqData;
   const r = await checkEmailAndPassword(email, password);
+
   if (r.status === "success") {
     logger.info(`User ${email} logged in successfully.`);
     ctx.session.userInfo = fetchSafeUserInfo(await getFullUserInfo(email));
     ctx.session.isLoggedIn = true;
   }
+
   return r;
 }
 
+async function handleLogout(ctx) {
+  ctx.session.isLoggedIn = false;
+  return { status: "success" };
+}
 
 async function handleCreateUser(reqData) {
   const { email, name, password } = reqData;
   const info = { email, name, password };
+
   if (await isUserExists(email))
     return { status: "fail", type: "REGISTERED_BEFORE" };
 

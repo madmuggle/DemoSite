@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Input, Button, Icon, Form, Checkbox } from "antd";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { Input, Button, Icon, Form, Checkbox } from "antd";
 import reqSvc from "./reqSvc";
 import "../css/Login.css";
 
@@ -61,12 +62,16 @@ class LoginForm extends Component {
       break;
 
     case "SUCCESS":
+      /*
       this.help.emailInfo = "";
       this.help.passwordInfo = "";
       this.setState({
         emailValidateStatus: "success",
         passwordValidateStatus: "success",
       });
+      */
+      this.props.loginAcknowledge();
+      this.props.history.push("/");
       break;
 
     default:
@@ -194,6 +199,11 @@ class LoginForm extends Component {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    loginAcknowledge: () => dispatch({ type: "LOGIN" }),
+  }
+}
 
-export default Form.create()(LoginForm);
+export default connect(null, mapDispatchToProps)(Form.create()(LoginForm));
 

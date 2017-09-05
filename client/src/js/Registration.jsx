@@ -44,8 +44,11 @@ class RegistrationForm extends Component {
       break;
 
     case "SUCCESS":
+      /*
       this.help.emailInfo = "";
       this.setState({ emailValidateStatus: "success" });
+      */
+      this.props.history.push("/");
       break;
 
     default:

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { Menu, Icon } from "antd";
+import { Menu, Icon, Avatar } from "antd";
 import reqSvc from "./reqSvc";
 
 import "../css/Header.css";
@@ -41,6 +41,12 @@ class Header extends Component {
       break;
     case "login":
       this.props.history.push("/login");
+      break;
+    case "settings":
+      this.props.history.push("/settings");
+      break;
+    case "notifications":
+      this.props.history.push("/notifications");
       break;
     case "logout":
       this.reqLogout();
@@ -90,6 +96,36 @@ class Header extends Component {
     </Menu.Item>
   )
 
+  settings = (
+    <Menu.Item key="settings">
+      <div>
+        <Icon type="setting" />Settings
+      </div>
+    </Menu.Item>
+  )
+
+  notifications = (
+    <Menu.Item key="notifications">
+      <div>
+        <Icon type="bell" />Notifications
+      </div>
+    </Menu.Item>
+  )
+
+  user = (
+    <Menu.SubMenu
+      title={<span><Icon type="user" />User Related</span>}
+    >
+      <Menu.ItemGroup title="Main functions">
+        {this.notifications}
+        {this.settings}
+      </Menu.ItemGroup>
+      <Menu.ItemGroup title="Others">
+        {this.logout}
+      </Menu.ItemGroup>
+    </Menu.SubMenu>
+  )
+
   headerMenu = () => {
     const selectedKey = menuUrlKeyMap[this.props.location.pathname];
     if (this.props.isLoggedIn)
@@ -101,7 +137,7 @@ class Header extends Component {
         >
           {this.homepage}
           {this.email}
-          {this.logout}
+          {this.user}
         </Menu>
       );
     else

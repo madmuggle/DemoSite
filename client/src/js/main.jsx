@@ -8,6 +8,8 @@ import Body from "./Body";
 import Greeter from "./Greeter";
 import Login from "./Login";
 import Registration from "./Registration";
+import Settings from "./Settings";
+import Notifications from "./Notifications";
 
 import { reduxStore } from "./reduxStore";
 
@@ -24,6 +26,8 @@ render((
             <Route exact path="/" component={Greeter} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Registration} />
+            <Route path="/settings" component={Settings} />
+            <Route path="/notifications" component={Notifications} />
             <Redirect path="*" to="/" />
           </Switch>
         </Body>

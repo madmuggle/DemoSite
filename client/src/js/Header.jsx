@@ -44,72 +44,62 @@ class Header extends Component {
     }
   }
 
-  email() {
-    return (
-      <Menu.Item key="email">
-        <div>
-          <Icon type="mail" />Contact
-        </div>
-      </Menu.Item>
-    );
-  }
+  email = (
+    <Menu.Item key="email">
+      <div>
+        <Icon type="mail" />Contact
+      </div>
+    </Menu.Item>
+  )
 
-  homepage() {
-    return (
-      <Menu.Item key="homepage">
-        <div>
-          <Icon type="home" />Homepage
-        </div>
-      </Menu.Item>
-    );
-  }
+  homepage = (
+    <Menu.Item key="homepage">
+      <div>
+        <Icon type="home" />Homepage
+      </div>
+    </Menu.Item>
+  )
 
-  register() {
-    return (
-      <Menu.Item key="register">
-        <div>
-          <Icon type="user-add" />Register
-        </div>
-      </Menu.Item>
-    );
-  }
+  register = (
+    <Menu.Item key="register">
+      <div>
+        <Icon type="user-add" />Register
+      </div>
+    </Menu.Item>
+  )
 
-  login() {
-    return (
-      <Menu.Item key="login">
-        <div>
-          <Icon type="login" />Login
-        </div>
-      </Menu.Item>
-    );
-  }
+  login = (
+    <Menu.Item key="login">
+      <div>
+        <Icon type="login" />Login
+      </div>
+    </Menu.Item>
+  )
 
-  logout() {
-    return (
-      <Menu.Item key="logout">
-        <div>
-          <Icon type="logout" />Logout
-        </div>
-      </Menu.Item>
-    );
-  }
+  logout = (
+    <Menu.Item key="logout">
+      <div>
+        <Icon type="logout" />Logout
+      </div>
+    </Menu.Item>
+  )
 
   headerMenu = () => {
     if (this.props.isLoggedIn)
       return (
         <Menu onClick={this.handleClick} mode="horizontal">
-          {this.homepage()}
-          {this.email()}
-          {this.logout()}
+          {this.homepage}
+          {this.email}
+          {this.logout}
         </Menu>
       );
     else
       return (
         <Menu onClick={this.handleClick} mode="horizontal">
-          {this.homepage()}
-          {this.email()}
-          {this.register()}
-          {this.login()}
+          {this.homepage}
+          {this.email}
+          {this.register}
+          {this.login}
         </Menu>
       );
   }

@@ -7,6 +7,12 @@ import reqSvc from "./reqSvc";
 import "../css/Header.css";
 
 
+const menuUrlKeyMap = {
+  "/": "homepage",
+  "/register" : "register",
+  "/login": "login",
+}
+
 class Header extends Component {
 
   reqLogout = async () => {
@@ -85,9 +91,14 @@ class Header extends Component {
   )
 
   headerMenu = () => {
+    const selectedKey = menuUrlKeyMap[this.props.location.pathname];
     if (this.props.isLoggedIn)
       return (
-        <Menu onClick={this.handleClick} mode="horizontal">
+        <Menu
+          onClick={this.handleClick}
+          mode="horizontal"
+          selectedKeys={[ selectedKey ]}
+        >
           {this.homepage}
           {this.email}
           {this.logout}
@@ -95,7 +106,11 @@ class Header extends Component {
       );
     else
       return (
-        <Menu onClick={this.handleClick} mode="horizontal">
+        <Menu
+          onClick={this.handleClick}
+          mode="horizontal"
+          selectedKeys={[ selectedKey ]}
+        >
           {this.homepage}
           {this.email}
           {this.register}

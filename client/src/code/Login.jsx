@@ -24,7 +24,7 @@ class LoginForm extends Component {
     try {
       const r = await reqSvc({ action: "Login", data: userInfo });
       if (r.status === "success")
-        return "SUCCESS"
+        return "SUCCESS";
       else
         return r.type;
     } catch (e) {

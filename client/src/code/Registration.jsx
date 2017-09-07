@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Button, Icon, Form, Checkbox } from "antd";
+import { Input, Button, Icon, Form, Checkbox, message } from "antd";
 import { Link } from "react-router-dom";
 import reqSvc from "./reqSvc";
 
@@ -49,6 +49,7 @@ class RegistrationForm extends Component {
       this.help.emailInfo = "";
       this.setState({ emailValidateStatus: "success" });
       */
+      message.success("You have just created a new account.");
       this.props.history.push("/");
       break;
 

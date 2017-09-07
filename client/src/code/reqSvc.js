@@ -1,37 +1,17 @@
 const SERVICESURI = "http://localhost:8000/api";
 
-export default async function reqSvc(requestJson) {
+export default async function reqSvc(requestObj) {
   const resp = await fetch(SERVICESURI, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestJson),
+    body: JSON.stringify(requestObj),
   });
 
-  // Use resp.text() then JSON.parse, for better debug info.
-  // resp.json() works, too.
-  const respText = await resp.text();
-
-  console.log("Request:\n", requestJson);
-  console.log("Response:\n", resp);
-  console.log("Response content:\n", respText);
-
   if (resp.status !== 200)
-    throw new Error("Api response status: " + resp.status);
+    throw new Error(`${resp.status}, "${await resp.text()}"`);
 
-  return JSON.parse(respText);
+  return await resp.json();
 }
 
-
-//reqSvc({
-//  action: "CreateUser",
-//  data: {
-//    fullname: "James Potter",
-//    age: 30
-//  },
-//})
-//.then(x => console.log("CreateUser result:", x))
-//.catch(console.error);
 

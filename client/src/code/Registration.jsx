@@ -27,7 +27,7 @@ class RegistrationForm extends Component {
       else
         return r.type;
     } catch (e) {
-      console.error("reqSvc failed:", e);
+      console.warn("reqSvc failed:", e);
       return "REQUEST_FAIL";
     }
   }

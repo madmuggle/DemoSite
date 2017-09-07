@@ -19,7 +19,7 @@ export default async function reqSvc(requestJson) {
   console.log("Response content:\n", respText);
 
   if (resp.status !== 200)
-    throw new Error("api request failed.");
+    throw new Error("Api response status: " + resp.status);
 
   return JSON.parse(respText);
 }

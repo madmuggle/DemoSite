@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { message } from "antd";
 import reqSvc from "./reqSvc";
 
 
@@ -16,7 +17,8 @@ class Body extends Component {
 
       this.props.logInfoAcknowledge(r.data);
     } catch (e) {
-      console.error("reqSvc failed:", e);
+      message.warn("Server not responding, please try it later.");
+      console.warn("reqSvc failed:", e);
     }
   }
 

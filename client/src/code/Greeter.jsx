@@ -30,7 +30,7 @@ class Greeter extends Component {
       console.log("Will show you info...");
       this.setState({ yourInfo: r.data });
     } catch (e) {
-      console.error("reqSvc failed:", e);
+      console.warn("reqSvc failed:", e);
     }
   }
 

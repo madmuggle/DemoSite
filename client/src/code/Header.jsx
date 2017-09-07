@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { Menu, Icon, Avatar } from "antd";
+import { Menu, Icon, Avatar, message } from "antd";
 import reqSvc from "./reqSvc";
 
 import "../style/Header.less";
@@ -19,12 +19,16 @@ class Header extends Component {
     try {
       const r = await reqSvc({ action: "Logout" });
       if (r.status !== "success") {
+        message.error("Server error, please contact the maintainer.");
         console.error("Failed logout:", r);
         return;
       }
+      message.info("You have just logged out.");
       this.props.logoutAcknowledge();
     } catch (e) {
-      console.error("reqSvc failed:", e);
+      message.warn("Failed logout, the server is busy, try it later");
+      console.warn("reqSvc failed:", e);
+      throw e;
     }
   }
 
@@ -49,7 +53,8 @@ class Header extends Component {
       this.props.history.push("/notifications");
       break;
     case "logout":
-      this.reqLogout();
+      // catch the exception and ignore it, as it has already been handled.
+      this.reqLogout().then(() => this.props.history.push("/"), e => e);
       break;
     default:
       console.error("Unknown Menu.Item key:", e.key);

@@ -1,7 +1,7 @@
 const logger = require("./logger");
 
 
-const VALID_PUBLIC_ACTIONS = [ "CreateUser", "Login", "IsLoggedIn" ];
+const VALID_PUBLIC_ACTIONS = [ "CreateUser", "Login", "Logout", "IsLoggedIn" ];
 
 async function actionFilter(ctx, next) {
   const { action } = ctx.request.body;

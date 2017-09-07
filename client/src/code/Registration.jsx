@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Input, Button, Icon, Form, Checkbox } from "antd";
 import { Link } from "react-router-dom";
 import reqSvc from "./reqSvc";
-import "../css/Registration.css";
+
+import "../style/Registration.less";
 
 const FormItem = Form.Item;
 

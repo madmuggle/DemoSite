@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Menu, Icon, Avatar } from "antd";
 import reqSvc from "./reqSvc";
 
-import "../css/Header.css";
+import "../style/Header.less";
 
 
 const menuUrlKeyMap = {

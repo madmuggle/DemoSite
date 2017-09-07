@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Input, Button, Icon, Form, Checkbox } from "antd";
 import reqSvc from "./reqSvc";
-import "../css/Login.css";
+
+import "../style/Login.less";
 
 const FormItem = Form.Item;
 

@@ -124,19 +124,21 @@ class Header extends Component {
     </Menu.Item>
   )
 
-  user = (
-    <Menu.SubMenu
-      title={<span><Icon type="user" />User Related</span>}
-    >
-      <Menu.ItemGroup title="Main functions">
-        {this.notifications}
-        {this.settings}
-      </Menu.ItemGroup>
-      <Menu.ItemGroup title="Others">
-        {this.logout}
-      </Menu.ItemGroup>
-    </Menu.SubMenu>
-  )
+  user() {
+    return (
+      <Menu.SubMenu
+        title={<span><Icon type="user" />{this.props.userInfo.name}</span>}
+      >
+        <Menu.ItemGroup title="Main functions">
+          {this.notifications}
+          {this.settings}
+        </Menu.ItemGroup>
+        <Menu.ItemGroup title="Others">
+          {this.logout}
+        </Menu.ItemGroup>
+      </Menu.SubMenu>
+    );
+  }
 
   headerMenu() {
     const selectedKey = menuUrlKeyMap[this.props.location.pathname];
@@ -149,7 +151,7 @@ class Header extends Component {
         >
           {this.homepage}
           {this.email}
-          {this.user}
+          {this.user()}
         </Menu>
       );
     else
@@ -181,6 +183,7 @@ class Header extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.isLoggedIn,
+    userInfo: state.userInfo,
   }
 }
 

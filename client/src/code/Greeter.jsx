@@ -22,7 +22,7 @@ class Greeter extends Component {
       }
 
       // Table dataSource need "key"
-      r.data = Object.assign(r.data, { key: "blah" });
+      r.data = Object.assign(r.data, { key: r.data.email });
 
       console.log("Will show you info...");
       this.props.setUserInfo(r.data);

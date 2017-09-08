@@ -12,7 +12,7 @@ function reducer(state, action) {
     return Object.assign({}, state, { isLoggedIn: true });
 
   case "LOGOUT":
-    return Object.assign({}, state, { isLoggedIn: false });
+    return Object.assign({}, state, { isLoggedIn: false, userInfo: "" });
 
   case "SETUSERINFO":
     return Object.assign({}, state, { userInfo: action.data });
@@ -25,9 +25,11 @@ function reducer(state, action) {
   }
 }
 
-const reduxStore = createStore(
+const store = createStore(
   reducer,
   //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-export default reduxStore;
+
+export default store;
+

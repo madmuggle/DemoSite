@@ -11,7 +11,7 @@ import Registration from "./Registration";
 import Settings from "./Settings";
 import Notifications from "./Notifications";
 
-import { reduxStore } from "./reduxStore";
+import reduxStore from "./reduxStore";
 
 import "antd/dist/antd.css";
 

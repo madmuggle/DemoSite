@@ -5,18 +5,15 @@ import reqSvc from "./reqSvc";
 import "../style/Greeter.less";
 
 
+const tableColumns = [
+  { title: "Email", dataIndex: "email", key: "email" },
+  { title: "Name", dataIndex: "name", key: "name" },
+];
+
+
 class Greeter extends Component {
 
-  columns = [
-    { title: "Email", dataIndex: "email", key: "email" },
-    { title: "Name", dataIndex: "name", key: "name" },
-  ]
-
-  state = {
-    yourInfo: null,
-  }
-
-  reqYourInfo = async () => {
+  async reqYourInfo() {
     try {
       const r = await reqSvc({ action: "GetUserInfo" });
       if (r.status !== "success") {
@@ -28,7 +25,7 @@ class Greeter extends Component {
       r.data = Object.assign(r.data, { key: "blah" });
 
       console.log("Will show you info...");
-      this.setState({ yourInfo: r.data });
+      this.props.setUserInfo(r.data);
     } catch (e) {
       console.warn("reqSvc failed:", e.message);
     }
@@ -39,12 +36,12 @@ class Greeter extends Component {
   }
 
   render() {
-    const { yourInfo } = this.state;
-    if (this.props.isLoggedIn) {
-      if (yourInfo)
+    const { userInfo, isLoggedIn } = this.props;
+    if (isLoggedIn) {
+      if (userInfo)
         return (
           <div className="data-center">
-            <Table columns={this.columns} dataSource={[ yourInfo ]} />
+            <Table columns={tableColumns} dataSource={[ userInfo ]} />
           </div>
         );
       else
@@ -66,9 +63,18 @@ class Greeter extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.isLoggedIn,
-  }
+    userInfo: state.userInfo,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setUserInfo: (userInfo) => (
+      dispatch({ type: "SETUSERINFO", data: userInfo })
+    ),
+  };
 }
 
 
-export default connect(mapStateToProps)(Greeter);
+export default connect(mapStateToProps, mapDispatchToProps)(Greeter);
 

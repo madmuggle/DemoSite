@@ -20,7 +20,7 @@ class LoginForm extends Component {
     passwordInfo: null,
   }
 
-  reqLogin = async userInfo => {
+  async reqLogin(userInfo) {
     try {
       const r = await reqSvc({ action: "Login", data: userInfo });
       if (r.status === "success")
@@ -97,7 +97,7 @@ class LoginForm extends Component {
     });
   }
 
-  emailItemSub = () => {
+  emailItemSub() {
     const { getFieldDecorator } = this.props.form;
     return (
       getFieldDecorator("email", {
@@ -114,7 +114,7 @@ class LoginForm extends Component {
     );
   }
 
-  emailItem = () => {
+  emailItem() {
     if (this.state.emailValidateStatus !== null)
       return (
         <FormItem
@@ -133,7 +133,7 @@ class LoginForm extends Component {
       );
   }
 
-  passwordItemSub = () => {
+  passwordItemSub() {
     const { getFieldDecorator } = this.props.form;
     return (
       getFieldDecorator("password", {
@@ -148,7 +148,7 @@ class LoginForm extends Component {
     );
   }
 
-  passwordItem = () => {
+  passwordItem() {
     if (this.state.passwordValidateStatus !== null)
       return (
         <FormItem
@@ -167,15 +167,17 @@ class LoginForm extends Component {
       );
   }
 
-  rememberItem = () => {
+  rememberItem() {
     const { getFieldDecorator } = this.props.form;
-    return getFieldDecorator("remember", {
-      valuePropName: "checked",
-      initialValue: true,
-    })(<Checkbox>Remember me</Checkbox>);
+    return (
+      getFieldDecorator("remember", {
+        valuePropName: "checked",
+        initialValue: true,
+      })(<Checkbox>Remember me</Checkbox>)
+    );
   }
 
-  submitItem = () => {
+  submitItem() {
     const { getFieldDecorator } = this.props.form;
     return (
       <FormItem>
@@ -206,5 +208,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Form.create()(LoginForm));
+export default connect(null, mapDispatchToProps)(
+  Form.create()(LoginForm)
+);
 

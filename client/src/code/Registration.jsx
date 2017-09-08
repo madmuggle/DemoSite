@@ -19,7 +19,7 @@ class RegistrationForm extends Component {
     emailInfo: null,
   }
 
-  reqCreateUser = async userInfo => {
+  async reqCreateUser(userInfo) {
     try {
       const r = await reqSvc({ action: "CreateUser", data: userInfo });
       if (r.status === "success")
@@ -102,7 +102,7 @@ class RegistrationForm extends Component {
       callback();
   }
 
-  emailItemSub = () => {
+  emailItemSub() {
     const { getFieldDecorator } = this.props.form;
     return (
       getFieldDecorator("email", {
@@ -119,7 +119,7 @@ class RegistrationForm extends Component {
     );
   }
 
-  emailItem = () => {
+  emailItem() {
     if (this.state.emailValidateStatus !== null)
       return (
         <FormItem
@@ -138,7 +138,7 @@ class RegistrationForm extends Component {
       );
   }
 
-  nameItem = () => {
+  nameItem() {
     const { getFieldDecorator } = this.props.form;
     return (
       <FormItem>
@@ -154,7 +154,7 @@ class RegistrationForm extends Component {
     );
   }
 
-  passwordItem = () => {
+  passwordItem() {
     const { getFieldDecorator } = this.props.form;
     return (
       <FormItem>
@@ -174,7 +174,7 @@ class RegistrationForm extends Component {
     );
   }
 
-  passwordChkItemSub = () => {
+  passwordChkItemSub() {
     const { getFieldDecorator } = this.props.form;
     return (
       getFieldDecorator("passwordChk", {
@@ -192,7 +192,7 @@ class RegistrationForm extends Component {
     );
   }
 
-  passwordChkItem = () => {
+  passwordChkItem() {
     if (this.state.passwordChkNeedUpdate)
       return (
         <FormItem
@@ -211,7 +211,7 @@ class RegistrationForm extends Component {
       );
   }
 
-  submitItem = () => {
+  submitItem() {
     const { getFieldDecorator } = this.props.form;
     return (
       <FormItem>

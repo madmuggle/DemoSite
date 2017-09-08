@@ -7,21 +7,20 @@ import reqSvc from "./reqSvc";
 
 class Body extends Component {
 
-  reqIsLoggedIn = async () => {
+  async reqIsLoggedIn() {
     try {
       const r = await reqSvc({ action: "IsLoggedIn" });
-      if (r.status !== "success") {
+      if (r.status === "success")
+        this.props.logInfoAcknowledge(r.data);
+      else
         console.error("Failed IsLoggedIn:", r);
-        return;
-      }
 
-      this.props.logInfoAcknowledge(r.data);
     } catch (e) {
-      message.warn("Server not responding, please try it later.");
-      console.warn("reqSvc failed:", e);
+      message.warn("Request to server failed.");
     }
   }
 
+  // Check login and trigger redux event
   componentDidMount() {
     this.reqIsLoggedIn();
   }
@@ -33,10 +32,9 @@ class Body extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    logInfoAcknowledge: isLoggedIn => {
-      if (isLoggedIn) dispatch({ type: "LOGIN" });
-      else dispatch({ type: "LOGOUT" });
-    }
+    logInfoAcknowledge: isLoggedIn => (
+      dispatch({ type: isLoggedIn ? "LOGIN" : "LOGOUT" })
+    ),
   }
 }
 

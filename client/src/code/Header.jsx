@@ -15,7 +15,7 @@ const menuUrlKeyMap = {
 
 class Header extends Component {
 
-  reqLogout = async () => {
+  async reqLogout() {
     try {
       const r = await reqSvc({ action: "Logout" });
       if (r.status !== "success") {
@@ -37,25 +37,32 @@ class Header extends Component {
     case "email":
       window.location = "mailto:wallacegibbon@aliyun.com";
       break;
+
     case "homepage":
       this.props.history.push("/");
       break;
+
     case "register":
       this.props.history.push("/register");
       break;
+
     case "login":
       this.props.history.push("/login");
       break;
+
     case "settings":
       this.props.history.push("/settings");
       break;
+
     case "notifications":
       this.props.history.push("/notifications");
       break;
+
     case "logout":
       // catch the exception and ignore it, as it has already been handled.
       this.reqLogout().then(() => this.props.history.push("/"), e => e);
       break;
+
     default:
       console.error("Unknown Menu.Item key:", e.key);
     }
@@ -131,7 +138,7 @@ class Header extends Component {
     </Menu.SubMenu>
   )
 
-  headerMenu = () => {
+  headerMenu() {
     const selectedKey = menuUrlKeyMap[this.props.location.pathname];
     if (this.props.isLoggedIn)
       return (

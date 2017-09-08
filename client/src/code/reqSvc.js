@@ -1,11 +1,14 @@
 const SERVICESURI = "http://localhost:8000/api";
 
-export default async function reqSvc(requestObj) {
+
+async function reqSvc(requestObj) {
   const resp = await fetch(SERVICESURI, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     credentials: "include",
-    body: JSON.stringify(requestObj),
+    body: ensureJson(requestObj),
   });
 
   if (resp.status !== 200)
@@ -14,4 +17,13 @@ export default async function reqSvc(requestObj) {
   return await resp.json();
 }
 
+
+function ensureJson(objOrJson) {
+  if (typeof objOrJson !== "string")
+    return JSON.stringify(objOrJson);
+  else
+    return objOrJson;
+}
+
+export default reqSvc;
 

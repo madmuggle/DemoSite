@@ -6,7 +6,7 @@ import { createStore } from "redux";
  *
  * Object.assign({}, state, ...) can't be replaced by Object.assign(state, ...),
  */
-function reducer(state, action) {
+function reducer(state = {}, action) {
   switch (action.type) {
   case "LOGIN":
     return Object.assign({}, state, { isLoggedIn: true });
@@ -17,9 +17,6 @@ function reducer(state, action) {
   case "SETUSERINFO":
     return Object.assign({}, state, { userInfo: action.data });
 
-  case "@@redux/INIT":
-    return {};
-
   default:
     return state;
   }
@@ -27,7 +24,7 @@ function reducer(state, action) {
 
 const store = createStore(
   reducer,
-  //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
 

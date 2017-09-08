@@ -64,7 +64,7 @@ async function handleLogout(ctx) {
 
 async function handleCreateUser(reqData) {
   const { email, name, password } = reqData;
-  const info = { email, name, password };
+  const info = { email: email.trim(), name: name.trim(), password };
 
   if (await isUserExists(email))
     return { status: "fail", type: "REGISTERED_BEFORE" };

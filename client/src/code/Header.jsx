@@ -68,73 +68,93 @@ class Header extends Component {
     }
   }
 
-  email = (
-    <Menu.Item key="email">
-      <div>
-        <Icon type="mail" />Contact
-      </div>
-    </Menu.Item>
-  )
+  email() {
+    return (
+      <Menu.Item key="email">
+        <div>
+          <Icon type="mail" />Contact
+        </div>
+      </Menu.Item>
+    );
+  }
 
-  homepage = (
-    <Menu.Item key="homepage">
-      <div>
-        <Icon type="home" />Homepage
-      </div>
-    </Menu.Item>
-  )
+  homepage() {
+    return (
+      <Menu.Item key="homepage">
+        <div>
+          <Icon type="home" />Homepage
+        </div>
+      </Menu.Item>
+    );
+  }
 
-  register = (
-    <Menu.Item key="register">
-      <div>
-        <Icon type="user-add" />Register
-      </div>
-    </Menu.Item>
-  )
+  register() {
+    return (
+      <Menu.Item key="register">
+        <div>
+          <Icon type="user-add" />Register
+        </div>
+      </Menu.Item>
+    );
+  }
 
-  login = (
-    <Menu.Item key="login">
-      <div>
-        <Icon type="login" />Login
-      </div>
-    </Menu.Item>
-  )
+  login() {
+    return (
+      <Menu.Item key="login">
+        <div>
+          <Icon type="login" />Login
+        </div>
+      </Menu.Item>
+    );
+  }
 
-  logout = (
-    <Menu.Item key="logout">
-      <div>
-        <Icon type="logout" />Logout
-      </div>
-    </Menu.Item>
-  )
+  logout() {
+    return (
+      <Menu.Item key="logout">
+        <div>
+          <Icon type="logout" />Logout
+        </div>
+      </Menu.Item>
+    );
+  }
 
-  settings = (
-    <Menu.Item key="settings">
-      <div>
-        <Icon type="setting" />Settings
-      </div>
-    </Menu.Item>
-  )
+  settings() {
+    return (
+      <Menu.Item key="settings">
+        <div>
+          <Icon type="setting" />Settings
+        </div>
+      </Menu.Item>
+    );
+  }
 
-  notifications = (
-    <Menu.Item key="notifications">
-      <div>
-        <Icon type="bell" />Notifications
-      </div>
-    </Menu.Item>
-  )
+  notifications() {
+    return (
+      <Menu.Item key="notifications">
+        <div>
+          <Icon type="bell" />Notifications
+        </div>
+      </Menu.Item>
+    );
+  }
+
+  userShow() {
+    return (
+      <span>
+        <Icon type="user" />{trimName(this.props.userInfo.name)}
+      </span>
+    )
+  }
 
   user() {
     return (
-      <Menu.SubMenu
-        title={<span><Icon type="user" />{this.props.userInfo.name}</span>}
-      >
+      <Menu.SubMenu title={this.userShow()}>
         <Menu.ItemGroup title="Main functions">
-          {this.notifications}
-          {this.settings}
+          {this.notifications()}
+          {this.settings()}
         </Menu.ItemGroup>
         <Menu.ItemGroup title="Others">
-          {this.logout}
+          {this.logout()}
         </Menu.ItemGroup>
       </Menu.SubMenu>
     );
@@ -149,8 +169,8 @@ class Header extends Component {
           mode="horizontal"
           selectedKeys={[ selectedKey ]}
         >
-          {this.homepage}
-          {this.email}
+          {this.homepage()}
+          {this.email()}
           {this.user()}
         </Menu>
       );
@@ -161,10 +181,10 @@ class Header extends Component {
           mode="horizontal"
           selectedKeys={[ selectedKey ]}
         >
-          {this.homepage}
-          {this.email}
-          {this.register}
-          {this.login}
+          {this.homepage()}
+          {this.email()}
+          {this.register()}
+          {this.login()}
         </Menu>
       );
   }
@@ -178,6 +198,14 @@ class Header extends Component {
       </header>
     );
   }
+}
+
+function trimName(nameStr) {
+  const limitNameSize = 20;
+  if (nameStr && nameStr.length > limitNameSize + 3)
+    return nameStr.slice(0, limitNameSize) + "..."
+  else
+    return nameStr;
 }
 
 function mapStateToProps(state) {

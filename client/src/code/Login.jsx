@@ -33,46 +33,76 @@ class LoginForm extends Component {
     }
   }
 
+  stateServerError() {
+    this.help.emailInfo = "Server is busy, try it later.";
+    this.help.passwordInfo = "";
+
+    this.setState({
+      emailValidateStatus: "warning",
+      passwordValidateStatus: "warning",
+    });
+  }
+
+  stateUnregister() {
+    this.help.emailInfo = "This email is not registered yet.";
+    this.help.passwordInfo = "";
+
+    this.setState({
+      emailValidateStatus: "error",
+      passwordValidateStatus: "error",
+    });
+  }
+
+  stateWrongPassword() {
+    this.help.passwordInfo = "password doesn't match the account.";
+    this.help.emailInfo = "";
+
+    this.setState({
+      emailValidateStatus: "error",
+      passwordValidateStatus: "error",
+    });
+  }
+
+  stateSuccess() {
+    this.props.loginAcknowledge();
+    this.props.history.push("/");
+    /*
+    this.help.passwordInfo = "";
+    this.help.emailInfo = "";
+
+    this.setState({
+      emailValidateStatus: "success",
+      passwordValidateStatus: "success",
+    });
+    */
+  }
+
+  stateLoggingIn() {
+    this.help.emailInfo = "Trying to login, please wait.";
+    this.help.passwordInfo = "";
+
+    this.setState({
+      emailValidateStatus: "validating",
+      passwordValidateStatus: "validating",
+    });
+  }
+
   changeStateByReqResult = result => {
     switch (result) {
     case "REQUEST_FAIL":
-      this.help.emailInfo = "Server is busy, try it later.";
-      this.help.passwordInfo = "";
-      this.setState({
-        emailValidateStatus: "warning",
-        passwordValidateStatus: "warning",
-      });
+      this.stateServerError();
       break;
 
     case "UNREGISTER":
-      this.help.emailInfo = "This email is not registered yet.";
-      this.help.passwordInfo = "";
-      this.setState({
-        emailValidateStatus: "error",
-        passwordValidateStatus: "error",
-      });
+      this.stateUnregister();
       break;
 
     case "WRONG_PASSWORD":
-      this.help.passwordInfo = "password doesn't match the account.";
-      this.help.emailInfo = "";
-      this.setState({
-        emailValidateStatus: "error",
-        passwordValidateStatus: "error",
-      });
+      this.stateWrongPassword();
       break;
 
     case "SUCCESS":
-      /*
-      this.help.emailInfo = "";
-      this.help.passwordInfo = "";
-      this.setState({
-        emailValidateStatus: "success",
-        passwordValidateStatus: "success",
-      });
-      */
-      this.props.loginAcknowledge();
-      this.props.history.push("/");
+      this.stateSuccess();
       break;
 
     default:
@@ -80,19 +110,14 @@ class LoginForm extends Component {
     }
   }
 
-  handleSubmmit = e => {
+  handleSubmit = e => {
     e.preventDefault();
 
     this.props.form.validateFields((e, vals) => {
       if (e)
         return console.log("Form validating failed:", e);
 
-      this.help.emailInfo = "Trying to login, please wait.";
-      this.setState({
-        emailValidateStatus: "validating",
-        passwordValidateStatus: "validating",
-      });
-
+      this.stateLoggingIn();
       this.reqLogin(vals).then(this.changeStateByReqResult);
     });
   }
@@ -193,7 +218,7 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <Form onSubmit={this.handleSubmmit} className="login-form">
+      <Form onSubmit={this.handleSubmit} className="login-form">
         {this.emailItem()}
         {this.passwordItem()}
         {this.submitItem()}

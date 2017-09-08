@@ -32,25 +32,42 @@ class RegistrationForm extends Component {
     }
   }
 
+  stateServerError() {
+    this.help.emailInfo = "Server is busy, try it later.";
+    this.setState({ emailValidateStatus: "warning" });
+  }
+
+  stateRegisteredBefore() {
+    this.help.emailInfo = "This email has registered before.";
+    this.setState({ emailValidateStatus: "error" });
+  }
+
+  stateSuccess() {
+    message.success("You have just created a new account.");
+    this.props.history.push("/");
+    /*
+    this.help.emailInfo = "";
+    this.setState({ emailValidateStatus: "success" });
+    */
+  }
+
+  stateCheckingEmail() {
+    this.help.emailInfo = "Checking email, please wait.";
+    this.setState({ emailValidateStatus: "validating" });
+  }
+
   changeStateByReqResult = result => {
     switch (result) {
     case "REQUEST_FAIL":
-      this.help.emailInfo = "Server is busy, try it later.";
-      this.setState({ emailValidateStatus: "warning" });
+      this.stateServerError();
       break;
 
     case "REGISTERED_BEFORE":
-      this.help.emailInfo = "This email has registered before.";
-      this.setState({ emailValidateStatus: "error" });
+      this.stateRegisteredBefore();
       break;
 
     case "SUCCESS":
-      /*
-      this.help.emailInfo = "";
-      this.setState({ emailValidateStatus: "success" });
-      */
-      message.success("You have just created a new account.");
-      this.props.history.push("/");
+      this.stateSuccess();
       break;
 
     default:
@@ -65,9 +82,7 @@ class RegistrationForm extends Component {
       if (e)
         return console.log("Form validating failed:", e);
 
-      this.help.emailInfo = "Checking email, please wait.";
-      this.setState({ emailValidateStatus: "validating" });
-
+      this.stateCheckingEmail();
       this.reqCreateUser(vals).then(this.changeStateByReqResult);
     });
   }
@@ -85,8 +100,7 @@ class RegistrationForm extends Component {
         callback();
       }
     } else {
-      callback();
-    }
+      callback(); }
   }
 
   checkPasswordMatch = (rule, value, callback) => {

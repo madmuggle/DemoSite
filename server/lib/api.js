@@ -1,6 +1,7 @@
 const { insertDocuments, updateDocument, deleteDocument, findDocuments }
   = require("./mongodb");
 const logger = require("./logger");
+const { encode, decode } = require("./encrypt");
 
 
 async function handler(ctx) {
@@ -39,32 +40,42 @@ async function handler(ctx) {
 }
 
 
-function fetchSafeUserInfo(userInfo) {
-  const { email, name } = userInfo;
-  return { email, name };
-}
-
 async function handleLogin(reqData, ctx) {
   const { email, password } = reqData;
   const r = await checkEmailAndPassword(email, password);
 
   if (r.status === "success") {
     logger.info(`User ${email} logged in successfully.`);
-    ctx.session.userInfo = fetchSafeUserInfo(await getFullUserInfo(email));
+
+    ctx.session.userInfo = selectEmailAndName(await getFullUserInfo(email));
     ctx.session.isLoggedIn = true;
   }
 
   return r;
 }
 
+
+function selectEmailAndName(obj) {
+  return { email: obj.email, name: obj.name };
+}
+
+
 async function handleLogout(ctx) {
   ctx.session.isLoggedIn = false;
   return { status: "success" };
 }
 
+
+function normalizeName(nameStr) {
+  return nameStr.trim().replace(/\s+/g, " ").toUpperCase();
+}
+
+
 async function handleCreateUser(reqData) {
-  const { email, name, password } = reqData;
-  const info = { email: email.trim(), name: name.trim(), password };
+  const name = normalizeName(reqData.name);
+  const email = reqData.email.trim();
+  const password = encode(reqData.password);
+  const info = { email, name, password };
 
   if (await isUserExists(email))
     return { status: "fail", type: "REGISTERED_BEFORE" };
@@ -88,7 +99,7 @@ async function checkEmailAndPassword(email, password) {
   if (!user)
     return { status: "fail", type: "UNREGISTER" };
 
-  if (user.password !== password)
+  if (decode(user.password) !== password)
     return { status: "fail", type: "WRONG_PASSWORD" };
 
   return { status: "success" };

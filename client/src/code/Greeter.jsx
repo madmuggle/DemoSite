@@ -8,8 +8,8 @@ import "../style/Greeter.less";
 
 
 const tableColumns = [
-  { title: "Email", dataIndex: "email", key: "email" },
   { title: "Name", dataIndex: "name", key: "name" },
+  { title: "Email", dataIndex: "email", key: "email" },
 ];
 
 

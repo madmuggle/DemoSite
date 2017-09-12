@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Table } from 'antd';
 import reqSvc from "./reqSvc";
+import { normalizeNameSpell } from "./utils";
+
 import "../style/Greeter.less";
 
 
@@ -22,7 +24,8 @@ class Greeter extends Component {
       }
 
       // Table dataSource need "key"
-      r.data = Object.assign(r.data, { key: r.data.email });
+      r.data.key = r.data.email;
+      r.data.name = normalizeNameSpell(r.data.name);
 
       console.log("Will show you info...");
       this.props.setUserInfo(r.data);

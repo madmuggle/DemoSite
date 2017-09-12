@@ -2,9 +2,11 @@
   "name": "DemoSiteClient",
   "version": "0.0.1",
   "scripts": {
+    "start": "npm run myDevServer & npm run watch",
     "build": "webpack",
     "watch": "webpack --watch",
-    "server": "webpack-dev-server --hot"
+    "devServer": "webpack-dev-server --hot",
+    "myDevServer": "node devserver.js"
   },
   "dependencies": {
     "antd": "^2.12.8",

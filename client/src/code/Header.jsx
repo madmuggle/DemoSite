@@ -24,7 +24,7 @@ class Header extends Component {
         return;
       }
       message.info("You have just logged out.");
-      this.props.logoutAcknowledge();
+      this.props.logInfoAcknowledge(false);
     } catch (e) {
       message.warn("Failed logout, the server is busy, try it later");
       console.warn("reqSvc failed:", e);
@@ -217,7 +217,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    logoutAcknowledge: () => dispatch({ type: "LOGOUT" }),
+    logInfoAcknowledge: isLoggedIn => (
+      dispatch({ type: isLoggedIn ? "LOGIN" : "LOGOUT" })
+    ),
   }
 }
 

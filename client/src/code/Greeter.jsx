@@ -31,6 +31,7 @@ class Greeter extends Component {
       this.props.setUserInfo(r.data);
     } catch (e) {
       console.warn("reqSvc failed:", e.message);
+      this.props.logInfoAcknowledge(false);
     }
   }
 
@@ -74,6 +75,9 @@ function mapDispatchToProps(dispatch) {
   return {
     setUserInfo: (userInfo) => (
       dispatch({ type: "SETUSERINFO", data: userInfo })
+    ),
+    logInfoAcknowledge: isLoggedIn => (
+      dispatch({ type: isLoggedIn ? "LOGIN" : "LOGOUT" })
     ),
   };
 }

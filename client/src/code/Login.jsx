@@ -64,7 +64,7 @@ class LoginForm extends Component {
   }
 
   stateSuccess() {
-    this.props.loginAcknowledge();
+    this.props.logInfoAcknowledge(true);
     this.props.history.push("/");
     /*
     this.help.passwordInfo = "";
@@ -229,7 +229,9 @@ class LoginForm extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loginAcknowledge: () => dispatch({ type: "LOGIN" }),
+    logInfoAcknowledge: isLoggedIn => (
+      dispatch({ type: isLoggedIn ? "LOGIN" : "LOGOUT" })
+    ),
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Input, Button, Icon, Form, Checkbox, message } from "antd";
 import { Link } from "react-router-dom";
-import reqSvc from "./reqSvc";
+import withReqSvc from "./withReqSvc";
 
 import "../style/Registration.less";
 
@@ -19,16 +19,22 @@ class RegistrationForm extends Component {
     emailInfo: null,
   }
 
-  async reqCreateUser(userInfo) {
-    try {
-      const r = await reqSvc({ action: "CreateUser", data: userInfo });
-      if (r.status === "success")
-        return "SUCCESS";
-      else
-        return r.type;
-    } catch (e) {
-      console.warn("reqSvc failed:", e);
-      return "REQUEST_FAIL";
+  changeStateByReqResult = result => {
+    switch (result) {
+    case "REQUEST_FAIL":
+      this.stateServerError();
+      break;
+
+    case "REGISTERED_BEFORE":
+      this.stateRegisteredBefore();
+      break;
+
+    case "SUCCESS":
+      this.stateSuccess();
+      break;
+
+    default:
+      console.error("Unknown request result:", result);
     }
   }
 
@@ -56,25 +62,6 @@ class RegistrationForm extends Component {
     this.setState({ emailValidateStatus: "validating" });
   }
 
-  changeStateByReqResult = result => {
-    switch (result) {
-    case "REQUEST_FAIL":
-      this.stateServerError();
-      break;
-
-    case "REGISTERED_BEFORE":
-      this.stateRegisteredBefore();
-      break;
-
-    case "SUCCESS":
-      this.stateSuccess();
-      break;
-
-    default:
-      console.error("Unknown request result:", result);
-    }
-  }
-
   handleSubmmit = e => {
     e.preventDefault();
 
@@ -83,7 +70,7 @@ class RegistrationForm extends Component {
         return console.log("Form validating failed:", e);
 
       this.stateCheckingEmail();
-      this.reqCreateUser(vals).then(this.changeStateByReqResult);
+      this.props.reqCreateUser(vals).then(this.changeStateByReqResult);
     });
   }
 
@@ -253,5 +240,5 @@ class RegistrationForm extends Component {
 }
 
 
-export default Form.create()(RegistrationForm);
+export default withReqSvc(Form.create()(RegistrationForm));
 

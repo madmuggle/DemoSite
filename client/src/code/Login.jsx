@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Input, Button, Icon, Form, Checkbox } from "antd";
-import reqSvc from "./reqSvc";
-import { normalizeNameSpell } from "./utils";
+import withReqSvc from "./withReqSvc";
 
 import "../style/Login.less";
 
@@ -21,34 +20,28 @@ class LoginForm extends Component {
     passwordInfo: null,
   }
 
-  async updateUserInfo() {
-    try {
-      const r = await reqSvc({ action: "GetUserInfo" });
-      if (r.status !== "success") {
-        console.warn("Unexpected response:", r);
-        return;
-      }
+  changeStateByReqResult = result => {
+    switch (result) {
+    case "REQUEST_FAIL":
+      this.stateServerError();
+      break;
 
-      r.data.name = normalizeNameSpell(r.data.name);
+    case "UNREGISTER":
+      this.stateUnregister();
+      break;
 
-      this.props.updateUserInfo(r.data);
-      this.props.logInfoAcknowledge(true);
-    } catch (e) {
-      console.warn("reqSvc failed:", e.message);
-      this.props.logInfoAcknowledge(false);
-    }
-  }
+    case "WRONG_PASSWORD":
+      this.stateWrongPassword();
+      break;
 
-  async reqLogin(userInfo) {
-    try {
-      const r = await reqSvc({ action: "Login", data: userInfo });
-      if (r.status === "success")
-        return "SUCCESS";
-      else
-        return r.type;
-    } catch (e) {
-      console.warn("reqSvc failed:", e);
-      return "REQUEST_FAIL";
+    case "SUCCESS":
+      this.stateSuccess();
+      this.props.updateUserInfo();
+      this.props.history.push("/");
+      break;
+
+    default:
+      console.error("Unknown request result:", result);
     }
   }
 
@@ -83,8 +76,6 @@ class LoginForm extends Component {
   }
 
   stateSuccess() {
-    this.updateUserInfo();
-    this.props.history.push("/");
     /*
     this.help.passwordInfo = "";
     this.help.emailInfo = "";
@@ -106,29 +97,6 @@ class LoginForm extends Component {
     });
   }
 
-  changeStateByReqResult = result => {
-    switch (result) {
-    case "REQUEST_FAIL":
-      this.stateServerError();
-      break;
-
-    case "UNREGISTER":
-      this.stateUnregister();
-      break;
-
-    case "WRONG_PASSWORD":
-      this.stateWrongPassword();
-      break;
-
-    case "SUCCESS":
-      this.stateSuccess();
-      break;
-
-    default:
-      console.error("Unknown request result:", result);
-    }
-  }
-
   handleSubmit = e => {
     e.preventDefault();
 
@@ -137,7 +105,7 @@ class LoginForm extends Component {
         return console.log("Form validating failed:", e);
 
       this.stateLoggingIn();
-      this.reqLogin(vals).then(this.changeStateByReqResult);
+      this.props.reqLogin(vals).then(this.changeStateByReqResult);
     });
   }
 
@@ -246,18 +214,7 @@ class LoginForm extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    updateUserInfo: (userInfo) => (
-      dispatch({ type: "UPDATE_USERINFO", data: userInfo })
-    ),
-    logInfoAcknowledge: isLoggedIn => (
-      dispatch({ type: isLoggedIn ? "LOGIN" : "LOGOUT" })
-    ),
-  }
-}
 
-export default connect(null, mapDispatchToProps)(
+export default withReqSvc(
   Form.create()(LoginForm)
 );
-

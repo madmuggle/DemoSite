@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Table } from 'antd';
-import reqSvc from "./reqSvc";
-import { normalizeNameSpell } from "./utils";
 
 import "../style/Greeter.less";
 

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Menu, Icon, Avatar, message } from "antd";
-import reqSvc from "./reqSvc";
+import withReqSvc from "./withReqSvc";
 
 import "../style/Header.less";
 
@@ -14,23 +14,6 @@ const menuUrlKeyMap = {
 }
 
 class Header extends Component {
-
-  async reqLogout() {
-    try {
-      const r = await reqSvc({ action: "Logout" });
-      if (r.status !== "success") {
-        message.error("Server error, please contact the maintainer.");
-        console.error("Failed logout:", r);
-        return;
-      }
-      message.info("You have just logged out.");
-      this.props.logInfoAcknowledge(false);
-    } catch (e) {
-      message.warn("Failed logout, the server is busy, try it later");
-      console.warn("reqSvc failed:", e);
-      throw e;
-    }
-  }
 
   handleClick = e => {
     switch (e.key) {
@@ -59,8 +42,8 @@ class Header extends Component {
       break;
 
     case "logout":
-      // catch the exception and ignore it, as it has already been handled.
-      this.reqLogout().then(() => this.props.history.push("/"), e => e);
+      this.props.reqLogout();
+      this.props.history.push("/");
       break;
 
     default:
@@ -138,10 +121,14 @@ class Header extends Component {
     );
   }
 
+  getUserName() {
+    return this.props.userInfo ? this.props.userInfo.name : "...";
+  }
+
   userShow() {
     return (
       <span>
-        <Icon type="user" />{trimName(this.props.userInfo.name)}
+        <Icon type="user" />{trimName(this.getUserName())}
       </span>
     )
   }
@@ -215,16 +202,7 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    logInfoAcknowledge: isLoggedIn => (
-      dispatch({ type: isLoggedIn ? "LOGIN" : "LOGOUT" })
-    ),
-  }
-}
-
-
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Header)
+  connect(mapStateToProps)(withReqSvc(Header))
 );
 

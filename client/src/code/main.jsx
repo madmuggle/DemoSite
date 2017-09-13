@@ -33,12 +33,10 @@ function Main() {
   return (
     <Provider store={reduxStore}>
       <BrowserRouter>
-        <div>
+        <Body>
           <Header />
-          <Body>
-            <BasicRouter />
-          </Body>
-        </div>
+          <BasicRouter />
+        </Body>
       </BrowserRouter>
     </Provider>
   );

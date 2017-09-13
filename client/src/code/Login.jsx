@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Input, Button, Icon, Form, Checkbox } from "antd";
 import reqSvc from "./reqSvc";
+import { normalizeNameSpell } from "./utils";
 
 import "../style/Login.less";
 
@@ -18,6 +19,24 @@ class LoginForm extends Component {
   help = {
     emailInfo: null,
     passwordInfo: null,
+  }
+
+  async updateUserInfo() {
+    try {
+      const r = await reqSvc({ action: "GetUserInfo" });
+      if (r.status !== "success") {
+        console.warn("Unexpected response:", r);
+        return;
+      }
+
+      r.data.name = normalizeNameSpell(r.data.name);
+
+      this.props.updateUserInfo(r.data);
+      this.props.logInfoAcknowledge(true);
+    } catch (e) {
+      console.warn("reqSvc failed:", e.message);
+      this.props.logInfoAcknowledge(false);
+    }
   }
 
   async reqLogin(userInfo) {
@@ -64,7 +83,7 @@ class LoginForm extends Component {
   }
 
   stateSuccess() {
-    this.props.logInfoAcknowledge(true);
+    this.updateUserInfo();
     this.props.history.push("/");
     /*
     this.help.passwordInfo = "";
@@ -229,6 +248,9 @@ class LoginForm extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateUserInfo: (userInfo) => (
+      dispatch({ type: "UPDATE_USERINFO", data: userInfo })
+    ),
     logInfoAcknowledge: isLoggedIn => (
       dispatch({ type: isLoggedIn ? "LOGIN" : "LOGOUT" })
     ),

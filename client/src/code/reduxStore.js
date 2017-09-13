@@ -12,9 +12,9 @@ function reducer(state = {}, action) {
     return Object.assign({}, state, { isLoggedIn: true });
 
   case "LOGOUT":
-    return Object.assign({}, state, { isLoggedIn: false, userInfo: "" });
+    return Object.assign({}, state, { isLoggedIn: false, userInfo: null });
 
-  case "SETUSERINFO":
+  case "UPDATE_USERINFO":
     return Object.assign({}, state, { userInfo: action.data });
 
   default:

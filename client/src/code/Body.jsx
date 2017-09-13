@@ -3,35 +3,43 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { message } from "antd";
 import reqSvc from "./reqSvc";
+import { normalizeNameSpell } from "./utils";
 
 
 class Body extends Component {
 
-  async reqIsLoggedIn() {
+  async updateUserInfo() {
     try {
-      const r = await reqSvc({ action: "IsLoggedIn" });
-      if (r.status === "success")
-        this.props.logInfoAcknowledge(r.data);
-      else
-        console.error("Failed IsLoggedIn:", r);
+      const r = await reqSvc({ action: "GetUserInfo" });
+      if (r.status !== "success") {
+        console.warn("Unexpected response:", r);
+        return;
+      }
 
+      r.data.name = normalizeNameSpell(r.data.name);
+
+      this.props.updateUserInfo(r.data);
+      this.props.logInfoAcknowledge(true);
     } catch (e) {
-      message.warn("Request to server failed.");
+      console.warn("reqSvc failed:", e.message);
+      this.props.logInfoAcknowledge(false);
     }
   }
 
-  // Check login and trigger redux event
   componentDidMount() {
-    this.reqIsLoggedIn();
+    this.updateUserInfo();
   }
 
   render() {
-    return this.props.children;
+    return <div>{this.props.children}</div>;
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateUserInfo: (userInfo) => (
+      dispatch({ type: "UPDATE_USERINFO", data: userInfo })
+    ),
     logInfoAcknowledge: isLoggedIn => (
       dispatch({ type: isLoggedIn ? "LOGIN" : "LOGOUT" })
     ),

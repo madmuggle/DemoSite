@@ -31,6 +31,7 @@ class RegistrationForm extends Component {
 
     case "SUCCESS":
       this.stateSuccess();
+      this.props.history.push("/");
       break;
 
     default:
@@ -50,7 +51,6 @@ class RegistrationForm extends Component {
 
   stateSuccess() {
     message.success("You have just created a new account.");
-    this.props.history.push("/");
     /*
     this.help.emailInfo = "";
     this.setState({ emailValidateStatus: "success" });

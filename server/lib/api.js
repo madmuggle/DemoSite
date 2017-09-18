@@ -1,5 +1,4 @@
-const { insertDocuments, updateDocument, deleteDocument, findDocuments }
-  = require("./mongodb");
+const { findUserByEmail, createUser } = require("./redis");
 const logger = require("./logger");
 const { encode, decode } = require("./encrypt");
 
@@ -47,7 +46,7 @@ async function handleLogin(reqData, ctx) {
   if (r.status === "success") {
     logger.info(`User ${email} logged in successfully.`);
 
-    ctx.session.userInfo = selectEmailAndName(await getFullUserInfo(email));
+    ctx.session.userInfo = selectEmailAndName(await findUserByEmail(email));
     ctx.session.isLoggedIn = true;
   }
 
@@ -80,22 +79,18 @@ async function handleCreateUser(reqData) {
   if (await isUserExists(email))
     return { status: "fail", type: "REGISTERED_BEFORE" };
 
-  await insertDocuments(global.mongoConn, "users", [ info ]);
+  await createUser(info);
   return { status: "success" };
 }
 
 
-async function getFullUserInfo(email) {
-  return (await findDocuments(global.mongoConn, "users", { email }))[0];
-}
-
 async function isUserExists(email) {
-  return !!(await getFullUserInfo(email));
+  return !!(await findUserByEmail(email));
 }
 
 
 async function checkEmailAndPassword(email, password) {
-  const user = await getFullUserInfo(email);
+  const user = await findUserByEmail(email);
   if (!user)
     return { status: "fail", type: "UNREGISTER" };
 

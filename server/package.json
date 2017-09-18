@@ -6,9 +6,9 @@
     "koa-bodyparser": "^4.2.0",
     "koa-route": "^3.2.0",
     "koa-session": "^5.5.0",
-    "mongodb": "^2.2.31"
+    "redis": "^2.8.0"
   },
   "scripts": {
-    "start": "MONGODB_URI=mongodb://localhost:27017/demo node lib/httpd.js"
+    "start": "node lib/httpd.js"
   }
 }

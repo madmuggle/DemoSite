@@ -7,6 +7,9 @@ const INSERT_N_UNMATCH = 1;
 const UPDATEONE_N_UNMATCH = 2;
 const DELETEONE_N_UNMATCH = 3;
 
+/**
+ * MONGODB_URI should be something like: "mongodb://localhost:27017/demo"
+ */
 
 function connectToMongo() {
   const uri = process.env.MONGODB_URI;

@@ -3,7 +3,6 @@ const bodyparser = require("koa-bodyparser");
 const route = require("koa-route");
 const Koa = require("koa");
 
-const { connectToMongo } = require("./mongodb");
 const { actionFilter } = require("./auth");
 const logger = require("./logger");
 const time = require("./time");
@@ -22,14 +21,6 @@ const sessionConfig = {
   httpOnly: true,
   signed: true,
 };
-
-// Connect to mongodb and store the connection to global.
-connectToMongo()
-.then(connection => {
-  logger.info(`Succeed connecting MongoDB "${process.env.MONGODB_URI}"`);
-  global.mongoConn = connection;
-})
-.catch(logger.error);
 
 
 app.keys = [ "Wallace", "Gibbon" ];

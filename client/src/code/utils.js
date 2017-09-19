@@ -6,6 +6,6 @@ function normalizeNameSpell(nameStr) {
   return nameStr.split(" ").map(normalizeOneWord).join(" ");
 }
 
-module.exports = {
+export {
   normalizeNameSpell,
 };

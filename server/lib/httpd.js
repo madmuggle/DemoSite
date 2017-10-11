@@ -15,8 +15,8 @@ const app = new Koa();
 const PORT = 8000;
 
 const sessionConfig = {
-  key: 'SESSIONID',
   maxAge: 1000 * 60 * 2,
+  key: 'SESSIONID',
   overwrite: true,
   httpOnly: true,
   signed: true,
